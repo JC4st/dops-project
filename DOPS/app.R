@@ -3,8 +3,8 @@ library(shiny)
 library(httr)
 library(jsonlite)
 
-supabase_url <- "url"  # Reemplaza con tu URL
-supabase_key <- "key"                        # Reemplaza con tu API KEY
+supabase_url <- URL  # Reemplaza con tu URL
+supabase_key <- KEY                      # Reemplaza con tu API KEY
 
 ui <- fluidPage(
   titlePanel("Direct Observation of Procedural Skills (DOPS) - F1 Version"),

@@ -7,9 +7,8 @@ library(jsonlite)
 library(dplyr)
 
 # Configura tus credenciales de Supabase
-supabase_url <- "https://cwpcpdgjncvtghmgwvix.supabase.co"
-supabase_key <- "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3cGNwZGdqbmN2dGdobWd3dml4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMyODAyMTksImV4cCI6MjA1ODg1NjIxOX0.Vikhe8J17HdSlJQ3e5VdgTsAsrSEHOhTFfhrmqjKt1w"
-
+supabase_url <- URL
+supabase_key <- KEY
 # También puedes definirlas directamente aquí (menos seguro):
 # supabase_url <- "https://tu-proyecto.supabase.co"
 # supabase_key <- "tu-api-key"
