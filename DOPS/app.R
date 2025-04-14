@@ -7,10 +7,10 @@ supabase_url <- URL  # Reemplaza con tu URL
 supabase_key <- KEY                      # Reemplaza con tu API KEY
 
 ui <- fluidPage(
-  titlePanel("Direct Observation of Procedural Skills (DOPS) - F1 Version"),
+  titlePanel("Direct Observation of Procedural Skills (DOPS)"),
   sidebarLayout(
     sidebarPanel(
-      textInput("doctor_surname", "Doctor's Surname"),
+      textInput("doctor_surname", "Trainee rurname"),
       textInput("forename", "Forename"),
       textInput("email", "Email (trainee)"),
       checkboxGroupInput("clinical_setting", "Clinical setting", 
