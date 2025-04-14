@@ -3,10 +3,6 @@ library(shiny)
 library(httr)
 library(jsonlite)
 
-URL <- "https://cwpcpdgjncvtghmgwvix.supabase.co"
-KEY <- "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3cGNwZGdqbmN2dGdobWd3dml4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMyODAyMTksImV4cCI6MjA1ODg1NjIxOX0.Vikhe8J17HdSlJQ3e5VdgTsAsrSEHOhTFfhrmqjKt1w"
-
-
 supabase_url <- URL  # Reemplaza con tu URL
 supabase_key <- KEY                      # Reemplaza con tu API KEY
 
