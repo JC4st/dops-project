@@ -1,6 +1,27 @@
-.Rproj.user
+
+# RStudio and R
+.Rproj.user/
 .Rhistory
-.Rdata
-.httr-oauth
+.RData
+.Ruserdata
+*.Rproj
+
+# Quarto and R Markdown outputs
+*.html
+*.pdf
+*.docx
+*_cache/
+*.knit.md
+*.utf8.md
+
+# Credentials and config
+.env
+*.key
+*.secret
+*.json
+*.yml
+config.R
+supabase_key.txt
+
+# System and macOS files
 .DS_Store
-.quarto
