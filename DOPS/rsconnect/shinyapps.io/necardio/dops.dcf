@@ -5,6 +5,8 @@ account: necardio
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 14445657
-bundleId: 10109166
+bundleId: 10115139
 url: https://necardio.shinyapps.io/dops/
 version: 1
+asMultiple: FALSE
+asStatic: FALSE
