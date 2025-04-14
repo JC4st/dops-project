@@ -1,0 +1,150 @@
+
+---
+title: "Performance Report"
+format: html
+params:
+  email: "juan.castellanos@urosario.edu.co"
+  fecha_inicio: "2025-01-01"
+  fecha_fin: "2025-04-12"
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(ggplot2)
+library(janitor)
+library(lubridate)
+library(readr)
+library(fmsb)
+library(gt)
+
+# Load data and helper functions
+source("leer_dops.R")
+
+convert_to_numeric <- function(x) {
+  case_when(
+    x == "Below expectations" ~ 1,
+    x == "Borderline" ~ 2,
+    x == "Meets expectations" ~ 3,
+    x == "Above expectations" ~ 4,
+    x == "U/C" ~ NA_real_,
+    TRUE ~ NA_real_
+  )
+}
+
+df <- leer_dops()
+student <- params$email
+start_date <- as.Date(params$fecha_inicio)
+end_date <- as.Date(params$fecha_fin)
+
+df_filtered <- df %>%
+  clean_names() %>%
+  filter(email == student) %>%
+  mutate(date = as.Date(submitted_at)) %>%
+  filter(date >= start_date & date <= end_date)
+```
+
+## Summary
+
+```{r echo=FALSE}
+n_total <- nrow(df_filtered)
+cat("There were", n_total, "DOPS submitted between", params$fecha_inicio, "and", params$fecha_fin)
+```
+
+## Overall Ability Distribution
+
+```{r echo=FALSE, fig.width=7, fig.height=4}
+df_plot <- df_filtered %>%
+  count(item_11) %>%
+  mutate(prop = round(n / sum(n) * 100, 1))
+
+ggplot(df_plot, aes(x = item_11, y = prop, fill = item_11)) +
+  geom_col() +
+  labs(
+    title = "Overall Ability Score Distribution",
+    x = "Rating",
+    y = "Percentage (%)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+## Radar Chart of Item Averages
+
+```{r echo=FALSE, fig.width=7, fig.height=7}
+item_cols <- paste0("item_", 1:11)
+
+df_items <- df_filtered %>%
+  select(all_of(item_cols)) %>%
+  mutate(across(everything(), convert_to_numeric))
+
+means <- colMeans(df_items, na.rm = TRUE)
+
+if (all(is.na(means))) {
+  cat("No sufficient data to display radar chart.")
+} else {
+  radar_data <- rbind(
+    rep(4, length(means)),
+    rep(1, length(means)),
+    means
+  )
+  colnames(radar_data) <- item_cols
+  
+  colnames(radar_data) <- c(
+    "Basic understanding", 
+    "Consent", 
+    "Preparation",
+    "Analgesia", 
+    "Technical", 
+    "Aseptic",
+    "Seeks help", 
+    "Post-procedure",
+    "Communication", 
+    "Professionalism",
+    "Overall"
+    )
+  
+  radar_data <- as.data.frame(radar_data)
+
+  radarchart(radar_data,
+             axistype = 1,
+             pcol = "#0072B2",
+             pfcol = rgb(0.1, 0.5, 0.8, 0.3),
+             plwd = 2,
+             cglcol = "grey",
+             cglty = 1,
+             axislabcol = "black",
+             caxislabels = c("1", "2", "3", "4"),
+             vlcex = 0.8,
+             title = paste("Radar Chart for", student)
+  )
+}
+```
+
+## Observations Table
+
+```{r echo=FALSE}
+df_filtered %>%
+  select(
+    Date = date,
+    `Procedure Name` = procedure_name,
+    `Assessor Email` = assessor_email,
+    `Overall Ability` = item_11,
+    Comments = comments
+  ) %>%
+  arrange(desc(Date)) %>%
+  gt() %>%
+  tab_header(
+    title = md("**Summary of Observations**")
+  )
+```
+
+## System Comments
+
+```{r echo=FALSE}
+if (n_total == 0) {
+  cat("No records were found for this period.")
+} else {
+  top_item <- df_plot$item_11[which.max(df_plot$prop)]
+  cat("The most frequent rating in Overall Ability was:", top_item)
+}
+```
