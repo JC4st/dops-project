@@ -1,11 +1,16 @@
 
 ---
 title: "Performance Report"
-format: html
+format:
+  pdf:
+    toc: true
+    number-sections: true
+    keep-tex: true
+    mainfont: Arial
 params:
   email: "juan.castellanos@urosario.edu.co"
   fecha_inicio: "2025-01-01"
-  fecha_fin: "2025-04-12"
+  fecha_fin: "2025-04-14"
 ---
 
 ```{r setup, include=FALSE}
@@ -16,6 +21,8 @@ library(lubridate)
 library(readr)
 library(fmsb)
 library(gt)
+library(knitr)
+library(kableExtra)
 
 # Load data and helper functions
 source("leer_dops.R")
@@ -44,8 +51,8 @@ df_filtered <- df %>%
 ```
 
 ## Summary
-
-```{r echo=FALSE}
+**Report for:** {{student}}
+```{r echo=FALSE, results='asis'}
 n_total <- nrow(df_filtered)
 cat("There were", n_total, "DOPS submitted between", params$fecha_inicio, "and", params$fecha_fin)
 ```
@@ -122,25 +129,22 @@ if (all(is.na(means))) {
 
 ## Observations Table
 
-```{r echo=FALSE}
+```{r echo=FALSE, warning=FALSE}
 df_filtered %>%
   select(
     Date = date,
-    `Procedure Name` = procedure_name,
-    `Assessor Email` = assessor_email,
-    `Overall Ability` = item_11,
-    Comments = comments
+    `Procedure` = procedure_name,
+    `Assessor` = assessor_email,
+    `Overall Ability` = item_11
   ) %>%
   arrange(desc(Date)) %>%
-  gt() %>%
-  tab_header(
-    title = md("**Summary of Observations**")
-  )
+  kable("latex", booktabs = TRUE, longtable = TRUE) %>%
+  kable_styling(font_size = 9, latex_options = c("repeat_header"))
 ```
 
-## System Comments
+## Overall Ability
 
-```{r echo=FALSE}
+```{r echo=FALSE, warning=FALSE}
 if (n_total == 0) {
   cat("No records were found for this period.")
 } else {

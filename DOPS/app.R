@@ -3,6 +3,8 @@ library(shiny)
 library(httr)
 library(jsonlite)
 
+
+
 supabase_url <- URL  # Reemplaza con tu URL
 supabase_key <- KEY                      # Reemplaza con tu API KEY
 
@@ -71,7 +73,7 @@ server <- function(input, output, session) {
         forename = input$forename,
         email = input$email,
         clinical_setting = paste(input$clinical_setting, collapse = ", "),
-        procedure_number = input$procedure_number,
+        procedure_name = input$procedure_name,
         assessor_position = paste(input$assessor_position, collapse = ", "),
         prev_dops = input$prev_dops,
         times_performed = input$times_performed,
