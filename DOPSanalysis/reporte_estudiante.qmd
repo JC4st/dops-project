@@ -48,12 +48,13 @@ df_filtered <- df %>%
   filter(email == student) %>%
   mutate(date = as.Date(submitted_at)) %>%
   filter(date >= start_date & date <= end_date)
+n_total <- nrow(df_filtered)
 ```
 
 ## Summary
-**Report for:** {{student}}
+
 ```{r echo=FALSE, results='asis'}
-n_total <- nrow(df_filtered)
+cat("\\textbf{Report for:} ", student, " \\newline\n")
 cat("There were", n_total, "DOPS submitted between", params$fecha_inicio, "and", params$fecha_fin)
 ```
 
